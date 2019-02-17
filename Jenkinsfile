@@ -10,18 +10,18 @@ node {
     } 
   }
 
-  stage('Build & Archive') {
+  stage('Build') {
    sh 'mvn clean package'      
    echo 'Archiving ...'
-   archiveArtifacts artifacts: '**/target/*.war'   	
+   archiveArtifacts artifacts: '/var/lib/jenkins/workspace/maven-build-deploy/webapp/target/webapp.war'   	
   }
   
   stage('Browser Testing') {
-   echo 'Test Succeeded'	
+   echo 'Test SUcceeded'	
   }
 
   stage('Deploy on Tomcat') {
-   sh 'sshpass -p "eugen" scp -r **/target/*.war root@192.168.109.100:/var/lib/tomcat8/webapps/webapp.war'	
+   sh 'sshpass -p "eugen" scp -r /var/lib/jenkins/workspace/maven-build-deploy/webapp/target/webapp.war root@192.168.109.100:/var/lib/tomcat8/webapps/webapp.war'	
   }
 
   stage('Create Report') {
