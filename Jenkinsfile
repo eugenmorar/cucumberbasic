@@ -1,12 +1,12 @@
 node {
 
   stage('Checkout') {
-    git 'https://github.com/eugenmorar/cucumberbasic.git'
+    	git 'https://github.com/eugenmorar/cucumberbasic.git'
   }
 
   stage('Sonar Analysis') {
     withSonarQubeEnv('LocalSonarServer') {
-      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+      	sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
     } 
   }
 
@@ -24,7 +24,7 @@ node {
   }
 
   stage('Deploy on Tomcat') {
-      sshpass -p "eugen" scp -r **/target/*.war root@192.168.109.100:/var/lib/tomcat8/webapps/webapp.war	
+      sh 'sshpass -p "eugen" scp -r **/target/*.war root@192.168.109.100:/var/lib/tomcat8/webapps/webapp.war'	
   }
 
   stage('Create Report') {
