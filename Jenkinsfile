@@ -1,10 +1,34 @@
 node {
-  stage('SCM') {
+
+  stage('Checkout') {
     git 'https://github.com/eugenmorar/cucumberbasic.git'
   }
-  stage('Sonar analysis') {
+
+  stage('Sonar Analysis') {
     withSonarQubeEnv('LocalSonarServer') {
       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-    } // SonarQube taskId is automatically attached to the pipeline context
+    } 
+  }
+
+  stage('Build') {
+   steps {
+	    sh 'mvn clean package'      
+   }
+   post {
+	    echo 'Archiving ...'
+	    archiveArtifacts artifacts: '**/target/*.war'
+   } 	
+  }
+  
+  stage('Browser Testing') {
+      echo 'Test Succeeded'	
+  }
+
+  stage('Deploy on Tomcat') {
+      sshpass -p "eugen" scp -r **/target/*.war root@192.168.109.100:/var/lib/tomcat8/webapps/webapp.war	
+  }
+
+  stage('Create Report') {
+      step([$class: "CucumberReportPublisher", failedFeaturesNumber: 0, failedScenariosNumber: 0, failedStepsNumber: 0, fileExcludePattern: '', fileIncludePattern: '**/*json', jsonReportDirectory: '', parallelTesting: false, pendingStepsNumber: 0, skippedStepsNumber: 0, trendsLimit: 0, undefinedStepsNumber: 0])
   }
 }
