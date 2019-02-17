@@ -18,7 +18,6 @@ node {
 	    echo 'Archiving ...'
 	    archiveArtifacts artifacts: '**/target/*.war'
    } 	
-  }
   
   stage('Browser Testing') {
       echo 'Test Succeeded'	
