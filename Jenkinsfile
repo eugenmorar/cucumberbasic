@@ -1,6 +1,6 @@
 node {
   stage('SCM') {
-    git 'https://github.com/eugenmorar/SeleniumWithCucucumber.git'
+    git 'https://github.com/eugenmorar/cucumberbasic.git'
   }
   stage('SonarQube analysis') {
     withSonarQubeEnv('LocalSonarServer') {
