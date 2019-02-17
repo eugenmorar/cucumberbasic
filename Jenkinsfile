@@ -10,14 +10,14 @@ node {
     } 
   }
 
-  stage('Build') {
+  stage('Build & Archive') {
    sh 'mvn clean package'      
    echo 'Archiving ...'
    archiveArtifacts artifacts: '**/target/*.war'   	
   }
   
   stage('Browser Testing') {
-   echo 'Test SUcceeded'	
+   echo 'Test Succeeded'	
   }
 
   stage('Deploy on Tomcat') {
